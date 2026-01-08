@@ -1,0 +1,416 @@
+<div class="p5-intake">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    /* Reset for PDF rendering - remove all margins */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 8.5in;
+      height: 11in;
+      overflow: hidden;
+    }
+
+    .p5-intake{
+      --p-navy:#0A192D;
+      --p-light-navy:#0F2440;
+      --p-yellow:#FFDD00;
+      --p-orange:#FF5500;
+      --p-red:#FF4D4D;
+      --p-turquoise:#00A3A3;
+
+      --p-flame: linear-gradient(to bottom, #FFDD00, #FF5500, #FF4D4D, #0A192D);
+
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+
+      --radius: 18px;
+      --shadow: 0 18px 48px rgba(0,0,0,.22);
+      --pad: 40px;
+
+      --hero-url: url("https://ntsxlmroqdyfjcjxucux.supabase.co/storage/v1/object/public/knowledge/2Q==__.jpeg");
+
+      --card: rgba(248,248,248,.06);
+      --card-border: rgba(248,248,248,.14);
+      --text: rgba(248,248,248,.96);
+      --muted: rgba(248,248,248,.74);
+    }
+
+    .p5-intake *{ box-sizing:border-box; }
+
+    .p5-page{
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--p-navy);
+      border-radius: 0;
+      box-shadow: none;
+
+      width: 8.5in;
+      height: 11in;
+
+      position: relative;
+      overflow: hidden;
+    }
+
+    .p5-heroWash{
+      position:absolute; inset:-2%;
+      background-image: var(--hero-url);
+      background-size: cover;
+      background-position: 50% 40%;
+      opacity: .12;
+      filter: blur(2px) saturate(1.05) contrast(1.05);
+      transform: scale(1.06);
+      pointer-events:none;
+    }
+
+    .p5-overlay{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(900px 700px at 18% 18%, rgba(0,163,163,.10) 0%, rgba(10,25,45,0) 58%),
+        linear-gradient(180deg, rgba(10,25,45,.84) 0%, rgba(10,25,45,.90) 56%, rgba(10,25,45,.94) 100%);
+      pointer-events:none;
+    }
+
+    .p5-accent{
+      position:absolute; left:0; right:0; top:0;
+      height: 8px;
+      background: var(--p-flame);
+      opacity:.92;
+    }
+
+    .p5-content{
+      position:relative;
+      height:100%;
+      padding: var(--pad);
+      display:grid;
+      grid-template-rows: auto minmax(0,1fr) auto auto; /* header / main / metrics / footer */
+      gap: 16px;
+      min-height: 0;
+    }
+
+    .p5-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 16px;
+      padding-top: 6px;
+    }
+
+    .p5-kicker{
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .p5-title{
+      margin: 10px 0 0 0;
+      font-size: clamp(26px, 3.2vw, 36px);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      font-weight: 800;
+    }
+
+    .p5-subline{
+      margin-top: 8px;
+      max-width: 68ch;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .p5-badge{
+      display:inline-flex;
+      align-items:center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(248,248,248,.10);
+      border: 1px solid rgba(248,248,248,.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size: 12px;
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+
+    .p5-main{
+      display:grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 16px;
+      min-height: 0;
+      align-items: stretch;
+    }
+
+    .p5-shot{
+      border-radius: 16px;
+      border: 1px solid rgba(248,248,248,.16);
+      background: rgba(248,248,248,.04);
+      overflow:hidden;
+      min-height: 0;
+      display:flex;
+      flex-direction:column;
+    }
+    .p5-shotTop{
+      height: 36px;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      padding: 0 12px;
+      border-bottom: 1px solid rgba(248,248,248,.10);
+      background: rgba(15,36,64,.35);
+      color: rgba(248,248,248,.70);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+    .p5-dot{
+      width:8px; height:8px; border-radius:999px;
+      background: rgba(0,163,163,.85);
+      box-shadow: 0 0 0 6px rgba(0,163,163,.10);
+      flex: 0 0 auto;
+    }
+    .p5-shotImgWrap{
+      position:relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      padding: 14px;
+    }
+    .p5-shotImg{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display:block;
+      border-radius: 12px;
+      border: 1px solid rgba(248,248,248,.10);
+      background: rgba(10,25,45,.25);
+    }
+
+    .p5-rail{
+      display:grid;
+      grid-template-rows: auto auto auto;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .p5-card{
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px 14px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      min-height: 0;
+    }
+
+    .p5-cardTitle{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      margin: 0 0 8px 0;
+      font-weight: 800;
+      letter-spacing: .02em;
+      font-size: 12.5px;
+      text-transform: uppercase;
+      color: rgba(248,248,248,.88);
+    }
+
+    .p5-icon{
+      width: 28px; height: 28px;
+      border-radius: 10px;
+      background: rgba(248,248,248,.06);
+      border: 1px solid rgba(248,248,248,.14);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex: 0 0 auto;
+    }
+    .p5-icon svg{
+      width: 16px; height: 16px;
+      stroke: rgba(248,248,248,.86);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .p5-list{
+      margin: 0;
+      padding-left: 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.42;
+    }
+    .p5-list li{ margin: 6px 0; }
+    .p5-list b{ color: rgba(248,248,248,.90); }
+
+    .p5-metrics{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .p5-metric{
+      border-radius: 14px;
+      border: 1px solid rgba(248,248,248,.12);
+      background: rgba(248,248,248,.05);
+      padding: 10px 10px;
+      min-height: 56px;
+    }
+    .p5-metricLabel{
+      margin:0;
+      font-size: 11px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: rgba(248,248,248,.62);
+      font-weight: 800;
+    }
+    .p5-metricValue{
+      margin: 8px 0 0 0;
+      font-size: 12.2px;
+      color: rgba(248,248,248,.86);
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .p5-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color: rgba(248,248,248,.55);
+      font-size: 12px;
+    }
+
+    @media print{
+      .p5-page{
+        width: 8.5in;
+        height: 11in;
+        box-shadow: none;
+        border-radius: 0;
+      }
+    }
+  </style>
+
+  <div class="p5-page">
+    <div class="p5-heroWash"></div>
+    <div class="p5-overlay"></div>
+    <div class="p5-accent"></div>
+
+    <div class="p5-content">
+      <!-- Header -->
+      <div class="p5-header">
+        <div>
+          <div class="p5-kicker">Capability • Prometheus AGS</div>
+          <h2 class="p5-title">Governance Intake</h2>
+          <div class="p5-subline">
+            Standardize AI requests with required fields, approvals, and audit-ready tracking.
+          </div>
+        </div>
+        <div class="p5-badge">Page 5</div>
+      </div>
+
+      <!-- Main -->
+      <div class="p5-main">
+        <!-- Left: UI screenshot -->
+        <div class="p5-shot">
+          <div class="p5-shotTop"><span class="p5-dot"></span> Product UI spotlight</div>
+          <div class="p5-shotImgWrap">
+            <img class="p5-shotImg"
+                 src="https://ntsxlmroqdyfjcjxucux.supabase.co/storage/v1/object/public/knowledge/2Q==__.jpeg"
+                 alt="Governance Intake UI screenshot" />
+          </div>
+        </div>
+
+        <!-- Right rail -->
+        <div class="p5-rail">
+          <div class="p5-card">
+            <div class="p5-cardTitle">
+              <span class="p5-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7 3h10v4H7z"></path>
+                  <path d="M7 7h10v14H7z"></path>
+                  <path d="M9 11h6"></path>
+                  <path d="M9 15h6"></path>
+                </svg>
+              </span>
+              What it delivers
+            </div>
+            <ul class="p5-list">
+              <li><b>Standard intake:</b> consistent request fields.</li>
+              <li><b>Workflow clarity:</b> triage → risk review → approval.</li>
+              <li><b>Audit trail:</b> track actions and decisions.</li>
+            </ul>
+          </div>
+
+          <div class="p5-card">
+            <div class="p5-cardTitle">
+              <span class="p5-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3l7 4v6c0 5-3 8-7 8s-7-3-7-8V7l7-4z"></path>
+                  <path d="M9 12l2 2 4-4"></path>
+                </svg>
+              </span>
+              How it works
+            </div>
+            <ul class="p5-list">
+              <li><b>Submit:</b> request + attachments.</li>
+              <li><b>Review:</b> signals + approvers aligned.</li>
+              <li><b>Decide:</b> approve or request changes.</li>
+            </ul>
+          </div>
+
+          <div class="p5-card">
+            <div class="p5-cardTitle">
+              <span class="p5-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 20V6"></path>
+                  <path d="M4 6l8-3 8 3"></path>
+                  <path d="M8 10h8"></path>
+                  <path d="M8 14h8"></path>
+                  <path d="M8 18h6"></path>
+                </svg>
+              </span>
+              Best for
+            </div>
+            <ul class="p5-list">
+              <li><b>New AI use-case approvals</b></li>
+              <li><b>Vendor/model onboarding</b></li>
+              <li><b>Cross-functional governance</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom metrics -->
+      <div class="p5-metrics">
+        <div class="p5-metric">
+          <p class="p5-metricLabel">Intake</p>
+          <p class="p5-metricValue">Required fields</p>
+        </div>
+        <div class="p5-metric">
+          <p class="p5-metricLabel">Workflow</p>
+          <p class="p5-metricValue">Approvals + routing</p>
+        </div>
+        <div class="p5-metric">
+          <p class="p5-metricLabel">Risk signals</p>
+          <p class="p5-metricValue">Review readiness</p>
+        </div>
+        <div class="p5-metric">
+          <p class="p5-metricLabel">Audit</p>
+          <p class="p5-metricValue">Logged actions</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="p5-footer">
+        <span>Prometheus AGS • 2026</span>
+        <span>Governance Intake</span>
+      </div>
+    </div>
+  </div>
+</div>

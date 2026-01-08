@@ -1,0 +1,211 @@
+<div class="pds-cover">
+  <style>
+    /* Font: Inter (Google). If you require zero external calls, tell me and I’ll switch to local @font-face URLs. */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    /* Reset for PDF rendering - remove all margins */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 8.5in;
+      height: 11in;
+      overflow: hidden;
+    }
+
+    .pds-cover{
+      /* Prometheus palette */
+      --p-navy:#0A192D;
+      --p-light-navy:#0F2440;
+      --p-yellow:#FFDD00;
+      --p-orange:#FF5500;
+      --p-red:#FF4D4D;
+      --p-turquoise:#00A3A3;
+      --p-light-blue:#4D9FFF;
+
+      /* Flame gradient */
+      --p-flame: linear-gradient(to bottom, #FFDD00, #FF5500, #FF4D4D, #0A192D);
+
+      /* Typography */
+      --p-font: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+
+      /* Layout tokens */
+      --radius: 18px;
+      --shadow: 0 18px 48px rgba(0,0,0,.28);
+      --pad: 44px;
+
+      /* Hero image */
+      --hero-url: url("https://ntsxlmroqdyfjcjxucux.supabase.co/storage/v1/object/public/knowledge/_53FTBjCGn1a2VTDrei6p.png");
+
+      /* Background positioning:
+         Adjust these two if you want the flame/network to sit differently in portrait crop. */
+      --hero-pos-x: 18%;
+      --hero-pos-y: 42%;
+
+      /* Overlay strength for legibility */
+      --overlay-left: rgba(10,25,45,.35);
+      --overlay-right: rgba(10,25,45,.78);
+    }
+
+    .pds-cover *{ box-sizing:border-box; }
+
+    /* “Page” container: US Letter portrait ratio (8.5x11) */
+    .pds-page{
+      font-family: var(--p-font);
+      color: rgba(248,248,248,.98);
+      background: var(--p-navy);
+      border-radius: 0;
+      box-shadow: none;
+
+      /* Full page sizing for PDF */
+      width: 8.5in;
+      height: 11in;
+
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pds-hero{
+      position:absolute; inset:0;
+      background-image: var(--hero-url);
+      background-size: cover;
+      background-position: var(--hero-pos-x) var(--hero-pos-y);
+      filter: saturate(1.02) contrast(1.02);
+      transform: scale(1.01); /* tiny scale to avoid edge gaps */
+    }
+
+    /* Legibility overlay: darker on right where text sits */
+    .pds-overlay{
+      position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, var(--overlay-left) 0%, rgba(10,25,45,.55) 45%, var(--overlay-right) 100%),
+        radial-gradient(1100px 900px at 15% 20%, rgba(255,221,0,.10) 0%, rgba(255,85,0,.06) 30%, rgba(10,25,45,0) 60%);
+      pointer-events:none;
+    }
+
+    /* Accent flame bar */
+    .pds-accent{
+      position:absolute; left:0; top:0; right:0;
+      height: 10px;
+      background: var(--p-flame);
+      opacity:.95;
+    }
+
+    /* Content grid */
+    .pds-content{
+      position:relative;
+      height:100%;
+      padding: var(--pad);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    /* Badge */
+    .pds-badge{
+      align-self:flex-end;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(248,248,248,.10);
+      border: 1px solid rgba(248,248,248,.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size: 12px;
+    }
+
+    /* Title block placed on right side */
+    .pds-titleWrap{
+      max-width: 64%;
+      margin-left: auto; /* push to right */
+      padding-top: 22px;
+    }
+
+    .pds-title{
+      font-size: clamp(34px, 4.2vw, 54px);
+      line-height: 1.06;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .pds-brand{
+      margin-top: 12px;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(248,248,248,.78);
+      font-weight: 700;
+    }
+
+    .pds-subtitle{
+      margin-top: 18px;
+      font-size: clamp(14px, 1.6vw, 18px);
+      line-height: 1.45;
+      color: rgba(248,248,248,.82);
+      max-width: 92%;
+      font-weight: 500;
+    }
+
+    /* Footer microline (optional) */
+    .pds-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:12px;
+      color: rgba(248,248,248,.65);
+      font-size: 12px;
+    }
+
+    .pds-dot{
+      width:8px; height:8px; border-radius:999px;
+      background: rgba(0,163,163,.9);
+      box-shadow: 0 0 0 6px rgba(0,163,163,.12);
+      flex: 0 0 auto;
+    }
+
+    /* Print hint (if you print from browser) */
+    @media print{
+      .pds-page{
+        width: 8.5in;
+        height: 11in;
+        box-shadow: none;
+        border-radius: 0;
+      }
+    }
+  </style>
+
+  <div class="pds-page">
+    <div class="pds-hero"></div>
+    <div class="pds-overlay"></div>
+    <div class="pds-accent"></div>
+
+    <div class="pds-content">
+      <div>
+        <div class="pds-badge">2026</div>
+
+        <div class="pds-titleWrap">
+          <h1 class="pds-title">The Agentic Operating Layer for Growth</h1>
+          <div class="pds-brand">Prometheus Agentic Growth Solutions</div>
+          <div class="pds-subtitle">
+            Orchestrate research, task execution, and knowledge access—with governance built in.
+          </div>
+        </div>
+      </div>
+
+      <div class="pds-footer">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="pds-dot"></span>
+          <span>Enterprise-ready agent workflows • Governance • Measurable value</span>
+        </div>
+        <div style="text-align:right;">
+          <span style="color:rgba(248,248,248,.55);">Cover</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

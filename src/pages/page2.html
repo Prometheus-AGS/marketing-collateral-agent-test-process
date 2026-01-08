@@ -1,0 +1,457 @@
+<div class="p2-overview">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    /* Reset for PDF rendering - remove all margins */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 8.5in;
+      height: 11in;
+      overflow: hidden;
+    }
+
+    .p2-overview{
+      --p-navy:#0A192D;
+      --p-light-navy:#0F2440;
+      --p-yellow:#FFDD00;
+      --p-orange:#FF5500;
+      --p-red:#FF4D4D;
+      --p-turquoise:#00A3A3;
+      --p-light-blue:#4D9FFF;
+
+      --p-flame: linear-gradient(to bottom, #FFDD00, #FF5500, #FF4D4D, #0A192D);
+
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+
+      --radius: 18px;
+      --shadow: 0 18px 48px rgba(0,0,0,.22);
+      --pad: 40px;
+
+      --hero-url: url("https://ntsxlmroqdyfjcjxucux.supabase.co/storage/v1/object/public/knowledge/_53FTBjCGn1a2VTDrei6p.png");
+      --hero-pos-x: 28%;
+      --hero-pos-y: 26%;
+      --hero-opacity: .20;
+
+      --card: rgba(248,248,248,.06);
+      --card-border: rgba(248,248,248,.14);
+      --text: rgba(248,248,248,.96);
+      --muted: rgba(248,248,248,.74);
+    }
+
+    .p2-overview *{ box-sizing:border-box; }
+
+    .p2-page{
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--p-navy);
+      border-radius: 0;
+      box-shadow: none;
+
+      width: 8.5in;
+      height: 11in;
+
+      position: relative;
+      overflow: hidden;
+    }
+
+    .p2-heroWash{
+      position:absolute; inset:-2%;
+      background-image: var(--hero-url);
+      background-size: cover;
+      background-position: var(--hero-pos-x) var(--hero-pos-y);
+      opacity: var(--hero-opacity);
+      filter: saturate(1.02) contrast(1.02);
+      transform: scale(1.03);
+      pointer-events:none;
+    }
+
+    .p2-overlay{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(900px 700px at 18% 22%, rgba(255,221,0,.08) 0%, rgba(255,85,0,.05) 28%, rgba(10,25,45,0) 60%),
+        linear-gradient(180deg, rgba(10,25,45,.80) 0%, rgba(10,25,45,.88) 52%, rgba(10,25,45,.94) 100%);
+      pointer-events:none;
+    }
+
+    .p2-accent{
+      position:absolute; left:0; right:0; top:0;
+      height: 8px;
+      background: var(--p-flame);
+      opacity:.92;
+    }
+
+    /* 4-row grid prevents overlap by construction */
+    .p2-content{
+      position:relative;
+      height:100%;
+      padding: var(--pad);
+      display:grid;
+      grid-template-rows: auto minmax(0,1fr) auto auto; /* header / main / kpis / footer */
+      gap: 16px;
+      min-height: 0;
+    }
+
+    .p2-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 16px;
+      padding-top: 6px;
+    }
+
+    .p2-kicker{
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .p2-title{
+      margin: 10px 0 0 0;
+      font-size: clamp(24px, 3.1vw, 33px);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      font-weight: 800;
+    }
+
+    .p2-subline{
+      margin-top: 8px;
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .p2-badge{
+      display:inline-flex;
+      align-items:center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(248,248,248,.10);
+      border: 1px solid rgba(248,248,248,.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size: 12px;
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+
+    .p2-main{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 16px;
+      align-items: stretch;
+      min-height: 0;
+    }
+
+    .p2-card{
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 16px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      min-height: 0;
+    }
+
+    .p2-cardTitle{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      margin: 0 0 8px 0;
+      font-weight: 800;
+      letter-spacing: .02em;
+      font-size: 12.5px;
+      text-transform: uppercase;
+      color: rgba(248,248,248,.86);
+    }
+
+    .p2-dot{
+      width:8px; height:8px; border-radius:999px;
+      background: rgba(0,163,163,.92);
+      box-shadow: 0 0 0 6px rgba(0,163,163,.12);
+      flex: 0 0 auto;
+    }
+
+    .p2-list{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13.2px;
+      line-height: 1.45;
+    }
+    .p2-list li{ margin: 7px 0; }
+
+    .p2-tiles{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .p2-tile{
+      border-radius: 14px;
+      border: 1px solid rgba(248,248,248,.14);
+      background: rgba(15,36,64,.40);
+      padding: 13px 13px;
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+    }
+
+    .p2-icon{
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      background:
+        linear-gradient(180deg, rgba(0,163,163,.20), rgba(77,159,255,.10)),
+        rgba(248,248,248,.06);
+      border: 1px solid rgba(248,248,248,.14);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex: 0 0 auto;
+      position: relative;
+      overflow:hidden;
+    }
+    .p2-icon svg{
+      width: 20px;
+      height: 20px;
+      stroke: rgba(248,248,248,.88);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      position: relative;
+      z-index: 1;
+    }
+    .p2-icon:after{
+      content:"";
+      position:absolute; inset:-60%;
+      background: radial-gradient(circle at 30% 25%, rgba(255,221,0,.16), rgba(255,85,0,.06), rgba(0,0,0,0) 60%);
+      transform: rotate(18deg);
+      z-index: 0;
+    }
+
+    .p2-tileTitle{
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin: 1px 0 4px 0;
+      font-size: 14px;
+      color: rgba(248,248,248,.92);
+    }
+
+    .p2-tileText{
+      margin: 0;
+      font-size: 12.6px;
+      line-height: 1.35;
+      color: rgba(248,248,248,.70);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .p2-kpis{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .p2-kpi{
+      border-radius: 14px;
+      border: 1px solid rgba(248,248,248,.12);
+      background: rgba(248,248,248,.05);
+      padding: 10px 10px;
+      min-height: 58px;
+    }
+
+    .p2-kpiLabel{
+      font-size: 11px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: rgba(248,248,248,.62);
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .p2-kpiValue{
+      margin: 8px 0 0 0;
+      font-size: 12.2px;
+      color: rgba(248,248,248,.86);
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .p2-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color: rgba(248,248,248,.55);
+      font-size: 12px;
+    }
+
+    @media print{
+      .p2-page{
+        width: 8.5in;
+        height: 11in;
+        box-shadow: none;
+        border-radius: 0;
+      }
+    }
+  </style>
+
+  <div class="p2-page">
+    <div class="p2-heroWash"></div>
+    <div class="p2-overlay"></div>
+    <div class="p2-accent"></div>
+
+    <div class="p2-content">
+      <!-- Header -->
+      <div class="p2-header">
+        <div>
+          <div class="p2-kicker">Overview • Prometheus AGS</div>
+          <h2 class="p2-title">Executive Overview</h2>
+          <div class="p2-subline">
+            Prometheus AGS operationalizes agentic work—coordinated, governed, measurable.
+          </div>
+        </div>
+        <div class="p2-badge">2026</div>
+      </div>
+
+      <!-- Main -->
+      <div class="p2-main">
+        <!-- Left -->
+        <div class="p2-card">
+          <div class="p2-cardTitle"><span class="p2-dot"></span> What enterprises face</div>
+          <ul class="p2-list">
+            <li><b>Agent sprawl:</b> inconsistent outputs, unmanaged risk.</li>
+            <li><b>Automation without controls:</b> unclear approvals, weak traceability.</li>
+            <li><b>Knowledge silos:</b> low reuse, repeated work.</li>
+          </ul>
+
+          <div style="height:12px;"></div>
+
+          <div class="p2-cardTitle"><span class="p2-dot"></span> How AGS helps</div>
+          <ul class="p2-list">
+            <li><b>Governed intake:</b> request → owner → approval.</li>
+            <li><b>Orchestrated execution:</b> research → tasks → deliverables.</li>
+            <li><b>Value visibility:</b> throughput, quality, ROI.</li>
+          </ul>
+        </div>
+
+        <!-- Right tiles + icons -->
+        <div class="p2-tiles">
+          <div class="p2-tile">
+            <div class="p2-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="M20 20l-3.5-3.5"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="p2-tileTitle">Deep Research Workspace</div>
+              <p class="p2-tileText">Structured investigations with provenance.</p>
+            </div>
+          </div>
+
+          <div class="p2-tile">
+            <div class="p2-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 6h10"></path>
+                <path d="M4 12h10"></path>
+                <path d="M4 18h10"></path>
+                <path d="M18 10l4 2-4 2z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="p2-tileTitle">Task Automation Queue</div>
+              <p class="p2-tileText">Queue and run repeatable tasks.</p>
+            </div>
+          </div>
+
+          <div class="p2-tile">
+            <div class="p2-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3l7 4v6c0 5-3 8-7 8s-7-3-7-8V7l7-4z"></path>
+                <path d="M9 12l2 2 4-4"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="p2-tileTitle">Governance Intake</div>
+              <p class="p2-tileText">Approvals, policies, accountability.</p>
+            </div>
+          </div>
+
+          <div class="p2-tile">
+            <div class="p2-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 5h10a3 3 0 0 1 3 3v12H7a3 3 0 0 0-3 3z"></path>
+                <path d="M7 5v15"></path>
+                <circle cx="18" cy="10" r="2.5"></circle>
+                <path d="M21 13l-1.8-1.8"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="p2-tileTitle">Knowledge Search</div>
+              <p class="p2-tileText">Find answers and reuse outputs.</p>
+            </div>
+          </div>
+
+          <div class="p2-tile">
+            <div class="p2-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 19V5"></path>
+                <path d="M4 19h16"></path>
+                <path d="M7 15l3-3 3 2 5-6"></path>
+                <path d="M17 8h2v2"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="p2-tileTitle">ROI &amp; Value Tracker</div>
+              <p class="p2-tileText">Track time saved and outcomes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI band (short, single-line values) -->
+      <div class="p2-kpis">
+        <div class="p2-kpi">
+          <p class="p2-kpiLabel">Time-to-answer</p>
+          <p class="p2-kpiValue">Faster decisions</p>
+        </div>
+        <div class="p2-kpi">
+          <p class="p2-kpiLabel">Automation cycle</p>
+          <p class="p2-kpiValue">Shorter task queues</p>
+        </div>
+        <div class="p2-kpi">
+          <p class="p2-kpiLabel">Approval flow</p>
+          <p class="p2-kpiValue">Higher throughput</p>
+        </div>
+        <div class="p2-kpi">
+          <p class="p2-kpiLabel">Audit readiness</p>
+          <p class="p2-kpiValue">Clear traceability</p>
+        </div>
+        <div class="p2-kpi">
+          <p class="p2-kpiLabel">Realized value</p>
+          <p class="p2-kpiValue">Measured ROI</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="p2-footer">
+        <span>Prometheus AGS • 2026</span>
+        <span>Page 2</span>
+      </div>
+    </div>
+  </div>
+</div>
